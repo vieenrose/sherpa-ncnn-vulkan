@@ -3,6 +3,7 @@
 import os
 import re
 import sys
+import subprocess
 from pathlib import Path
 
 import setuptools
@@ -30,6 +31,16 @@ def get_package_version():
     return latest_version
 
 
+class CustomBuildExt(BuildExtension):
+    def run(self):
+        # Run the script to build glslang
+        subprocess.check_call(['./build-glslang.sh'])
+        # Set the environment variable for the glslang directory
+        os.environ['glslang_DIR'] = os.path.abspath('my-glslang/build/install/lib/cmake/glslang')
+        # Call the original build_ext command
+        super().run()
+
+
 package_name = "sherpa-ncnn"
 
 with open("sherpa-ncnn/python/sherpa_ncnn/__init__.py", "a") as f:
@@ -54,7 +65,7 @@ setuptools.setup(
     long_description=read_long_description(),
     long_description_content_type="text/markdown",
     ext_modules=[cmake_extension("_sherpa_ncnn")],
-    cmdclass={"build_ext": BuildExtension, "bdist_wheel": bdist_wheel},
+    cmdclass={"build_ext": CustomBuildExt, "bdist_wheel": bdist_wheel},
     zip_safe=False,
     classifiers=[
         "Programming Language :: C++",
