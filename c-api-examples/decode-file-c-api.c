@@ -61,7 +61,7 @@ int32_t main(int32_t argc, char *argv[]) {
   }
 
   config.model_config.num_threads = num_threads;
-  config.model_config.use_vulkan_compute = 0;
+  config.model_config.use_vulkan_compute = 1;
 
   config.decoder_config.decoding_method = "greedy_search";
 

@@ -70,7 +70,7 @@ static void PybindModelConfig(py::module *m) {
              ans->joiner_bin = joiner_bin;
              ans->tokens = tokens;
 
-             ans->use_vulkan_compute = false;
+             ans->use_vulkan_compute = true;
 
              ans->encoder_opt.num_threads = num_threads;
              ans->decoder_opt.num_threads = num_threads;
